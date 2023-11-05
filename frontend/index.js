@@ -13,14 +13,19 @@ async function fetchData() {
 
     const learnersData = learnersResponse.data;
     const mentorsData = mentorsResponse.data;
+    //console.log(mentorsData);
 
     // Combine data from both endpoints to create the desired data structure.
     const combinedData = learnersData.map((learner) => {
       const mentors = learner.mentors.map((mentorId) => {
-        const mentor = mentorsData.find((m) => m.id === mentorId);
-        return mentor ? mentor.fullName : 'Unknown Mentor';
-      });
+        // console.log(mentorId)
 
+        const mentor = mentorsData.find((m) => m.id === mentorId);
+        // console.log(mentor)
+        return (mentor)
+      });
+      //  console.log(mentors)
+      
       return {
         id: learner.id,
         email: learner.email,
@@ -28,6 +33,7 @@ async function fetchData() {
         mentors,
       };
     });
+    // console.log(combinedData);
 
     return combinedData;
   } catch (error) {
@@ -47,28 +53,35 @@ function createLearnerCard(learner) {
     const h3 = document.createElement('h3');
   h3.textContent = learner.fullName;
 
+    // const leanerId = learner.id 
+  //  console.log(card.className);
+
   const h4 = document.createElement('h4');
   h4.classList.add('closed');
   h4.textContent = 'Mentors';
 
   const ul = document.createElement('ul');
-  learner.mentors.forEach((mentorName) => {
+  learner.mentors.forEach((mentorObject) => {
+    // console.log(mentorObject);
     const li = document.createElement('li');
-    li.textContent = mentorName;
+    li.textContent =`${mentorObject.firstName} ${mentorObject.lastName}`
     ul.appendChild(li);
   });
-
+  
   card.appendChild(h3);
-  card.appendChild(learnerEmail)
+  card.appendChild(learnerEmail);
   card.appendChild(h4);
   card.appendChild(ul);
+  //card.appendChild(li);
 
 
   // Add a click event listener to toggle the 'open' and 'closed' class of the card.
-  card.addEventListener('click', () => {
+  card.addEventListener('click', (evt) => {
     card.classList.toggle('selected');
     h4.classList.toggle('open');
     h4.classList.toggle('closed');
+    h3.textContent = learner.fullName + `, ID ${learner.id}`;
+console.log(evt.target);
   });
 
   document.querySelector('.cards').appendChild(card);
