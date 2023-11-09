@@ -51,7 +51,8 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
     learnerEmail.textContent = learner.email
 
     const h3 = document.createElement('h3');
-    h3.textContent = learner.fullName;
+    h3.textContent = learner.fullName
+    // h3.textContent = learner.fullName + ", ID " + learner.id
 
     // const leanerId = learner.id 
     //  console.log(card.className);
@@ -76,21 +77,29 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
 
 
     // Add a click event listener to toggle the 'open' and 'closed' class of the card.
-    card.addEventListener('click', (evt) => {
+    card.addEventListener('click', () => {
+
       let selected = document.querySelector('.selected');
       if (selected) {
         console.log("true");
         if (card.classList.contains('selected')) {
           card.classList.remove('selected');
-
+          h3.textContent = learner.fullName 
+          document.querySelector('.info').textContent = 'No learner is selected'
         } else {
           console.log("else")
           selected.classList.remove('selected')
           card.classList.add("selected")
+          h3.textContent = learner.fullName + ", ID " + learner.id 
+          document.querySelector('.info').textContent = `The selected learner is ${learner.fullName}`
+
         }
       } else {
         card.classList.add('selected');
-        console.log("false");
+        h3.textContent = learner.fullName + ", ID " + learner.id
+        document.querySelector('.info').textContent = `The selected learner is ${learner.fullname}`
+
+        // console.log("false");
       }
       // console.log(selected);
       // card.classList.toggle('selected');
@@ -124,17 +133,17 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
 
   // Call the fetchData function and render learner cards when data is available.
   fetchData().then((data) => {
-    if (data.length > 0) {
-      const loadingMessage = document.querySelector('.info');
-      loadingMessage.style.display = 'none';
+    // if (data.length > 0) {
+    //   const loadingMessage = document.querySelector('.info');
+    //   loadingMessage.style.display = 'none';
 
-      data.forEach((learner) => {
-        createLearnerCard(learner);
-      });
-    } else {
-      const loadingMessage = document.querySelector('.info');
-      loadingMessage.textContent = 'Failed to fetch learner data.';
-    }
+    data.forEach((learner) => {
+      createLearnerCard(learner);
+    });
+    // } else {
+    //   const loadingMessage = document.querySelector('.info');
+    //   loadingMessage.textContent = 'Failed to fetch learner data.';
+    // }
   });
 
 
